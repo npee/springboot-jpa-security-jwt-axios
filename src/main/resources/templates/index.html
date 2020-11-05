@@ -1,29 +1,44 @@
-
 <html>
 <head>
-
 </head>
 
 <body>
 <button onclick="onButtonClicked()">test</button>
-<h2 id="boom">0</h2>
+<button onclick="printNumber()">test</button>
+<h2 id="btn">0</h2>
 </body>
 <script src="/webjars/axios/0.20.0/dist/axios.min.js"></script>
 <script>
     function onButtonClicked() {
         axios({
-            method: 'get', //통신 방식
-            url: '/test', //통신할 페이지
-            data: {} //인자로 보낼 데이터
-        })
-            .then(response => {
-                document.getElementById('boom').innerText=response.data.data;
-                console.log(response);
-            })
-            .catch(error => {
-                document.getElementById('boom').innerText='error';
-                console.log(error);
-            })
+            method: 'get',
+            url: '/test',
+            data: {}
+        }).then(response => {
+            document.getElementById('btn').innerText = response.data.data;
+            console.log(response);
+        }).catch(error => {
+            document.getElementById('btn').innerText = 'error';
+            console.log(error);
+        });
     }
+
+    const getNumber = async () => {
+        try {
+            return await axios.get('/test');
+        } catch (e) {
+            document.getElementById('btn').innerText = 'error';
+            console.error(e);
+        }
+    };
+
+    const printNumber = async () => {
+        const number = await getNumber();
+        if (number.data.message) {
+            document.getElementById('btn').innerText = number.data.data;
+            console.log(number);
+        }
+    }
+
 </script>
 </html>
